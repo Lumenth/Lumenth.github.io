@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>开端 on Lumenth</title>
+        <link>https://Lumenth.github.io/categories/%E5%BC%80%E7%AB%AF/</link>
+        <description>Recent content in 开端 on Lumenth</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Lumenth</copyright>
+        <lastBuildDate>Sat, 06 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://Lumenth.github.io/categories/%E5%BC%80%E7%AB%AF/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>我的第一个博客</title>
+        <link>https://Lumenth.github.io/p/my_firstblog/</link>
+        <pubDate>Sat, 06 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://Lumenth.github.io/p/my_firstblog/</guid>
+        <description>&lt;img src="https://Lumenth.github.io/p/my_firstblog/helena-hertz-wWZzXlDpMog-unsplash.jpg" alt="Featured image of post 我的第一个博客" /&gt;&lt;h1 id=&#34;hello-world&#34;&gt;Hello world
+&lt;/h1&gt;&lt;h2 id=&#34;正文&#34;&gt;正文
+&lt;/h2&gt;&lt;p&gt;由于硬盘崩溃导致的数据文本丢失已经不想在经历了，因此我决定开一个博客来记录我的学习经历，但是服务器＋域名过于昂贵，购买服务器也不是我的刚需，所以github对我来说是一个很好的选择。&lt;/p&gt;
+&lt;p&gt;以后我会在这里不定期更新学习经验&lt;/p&gt;
+&lt;h2 id=&#34;图片&#34;&gt;图片
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://Lumenth.github.io/p/my_firstblog/florian-klauer-nptLmg6jqDo-unsplash.jpg&#34;
+	width=&#34;667&#34;
+	height=&#34;1000&#34;
+	srcset=&#34;https://Lumenth.github.io/p/my_firstblog/florian-klauer-nptLmg6jqDo-unsplash_hu_e98fca2b4272416e.jpg 480w, https://Lumenth.github.io/p/my_firstblog/florian-klauer-nptLmg6jqDo-unsplash_hu_e3d37c9ded115b12.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Photo by Florian Klauer on Unsplash&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;66&#34;
+		data-flex-basis=&#34;160px&#34;
+	
+&gt;  &lt;img src=&#34;https://Lumenth.github.io/p/my_firstblog/luca-bravo-alS7ewQ41M8-unsplash.jpg&#34;
+	width=&#34;1000&#34;
+	height=&#34;667&#34;
+	srcset=&#34;https://Lumenth.github.io/p/my_firstblog/luca-bravo-alS7ewQ41M8-unsplash_hu_e13c58d5189f892c.jpg 480w, https://Lumenth.github.io/p/my_firstblog/luca-bravo-alS7ewQ41M8-unsplash_hu_8fc948b7ee525251.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Photo by Luca Bravo on Unsplash&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;149&#34;
+		data-flex-basis=&#34;359px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Lumenth.github.io/p/my_firstblog/helena-hertz-wWZzXlDpMog-unsplash.jpg&#34;
+	width=&#34;1000&#34;
+	height=&#34;750&#34;
+	srcset=&#34;https://Lumenth.github.io/p/my_firstblog/helena-hertz-wWZzXlDpMog-unsplash_hu_503c0ebcc5245e10.jpg 480w, https://Lumenth.github.io/p/my_firstblog/helena-hertz-wWZzXlDpMog-unsplash_hu_48c98de55fb3c999.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Photo by Helena Hertz on Unsplash&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;133&#34;
+		data-flex-basis=&#34;320px&#34;
+	
+&gt;  &lt;img src=&#34;https://Lumenth.github.io/p/my_firstblog/hudai-gayiran-3Od_VKcDEAA-unsplash.jpg&#34;
+	width=&#34;667&#34;
+	height=&#34;1000&#34;
+	srcset=&#34;https://Lumenth.github.io/p/my_firstblog/hudai-gayiran-3Od_VKcDEAA-unsplash_hu_f81a3588c5c4a663.jpg 480w, https://Lumenth.github.io/p/my_firstblog/hudai-gayiran-3Od_VKcDEAA-unsplash_hu_1c52ba2a4ad7b9a0.jpg 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Photo by Hudai Gayiran on Unsplash&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;66&#34;
+		data-flex-basis=&#34;160px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;博客搭建方法来自&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1bovfeaEtQ?spm_id_from=333.788.videopod.episodes&amp;amp;vd_source=89a95dedd08ac36719901ea65feaa34b&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Letere-莱特雷&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;主题来自&lt;a class=&#34;link&#34; href=&#34;https://stack.jimmycai.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Stack&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
