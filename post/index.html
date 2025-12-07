@@ -23,7 +23,7 @@
 <style>
     .loading {
         position: fixed;
-        display: flex;
+        display: none;
         justify-content: center;
         align-items: center;
         top: 0;
@@ -90,17 +90,51 @@
 
 </style>
 
-<script>	
+<script>
     function initLoading() {
-        let loading = document.querySelector(".loading");
-        document.addEventListener('DOMContentLoaded', function() {
+        
+        const isFirstVisit = !sessionStorage.getItem('visited');
+        if (isFirstVisit) {
+            const loading = document.querySelector(".loading");
+            
+            loading.style.display = "flex";
+            
+            
+            const animationStartTime = Date.now();
+            
+            
+            window.addEventListener('load', function() {
+                
+                const playedTime = Date.now() - animationStartTime;
+                const delayTime = Math.max(1500 - playedTime, 0);
+                
+                
+                setTimeout(() => {
+                    loading.style.opacity = 0;
+                    
+                    setTimeout(() => {
+                        loading.style.display = "none";
+                    }, 300);
+                    
+                    
+                    sessionStorage.setItem('visited', 'true');
+                }, delayTime);
+            });
+            
             
             setTimeout(() => {
-                loading.style.display = "none";
-            }, 1500);
-        });
+                if (loading.style.display === "flex") {
+                    loading.style.opacity = 0;
+                    setTimeout(() => {
+                        loading.style.display = "none";
+                    }, 300);
+                    sessionStorage.setItem('visited', 'true');
+                }
+            }, 5000);
+        }
     }
 
+    
     initLoading();
 </script>
 
