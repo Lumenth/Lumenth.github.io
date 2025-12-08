@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="SYNtzulu：一种用于低功耗FPGA实时传感器数据分析的微型RISC-V控制 SNN 处理器 事件流程 将传入的传感器数据编码为多通道的脉冲箱，每个脉冲箱对应一个传感器数据样本，并实时进行SNN推理以获得可以直接解码为当前任务结果的输出脉冲序列。 ">
+<title>SYNzulu处理器</title>
+
+<link rel='canonical' href='https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/'>
+
+<link rel="stylesheet" href="/scss/style.min.03a9ea34ffd1d99d8a862190117b328f3faa2f31a5b869c7270206af30012728.css"><meta property='og:title' content="SYNzulu处理器">
+<meta property='og:description' content="SYNtzulu：一种用于低功耗FPGA实时传感器数据分析的微型RISC-V控制 SNN 处理器 事件流程 将传入的传感器数据编码为多通道的脉冲箱，每个脉冲箱对应一个传感器数据样本，并实时进行SNN推理以获得可以直接解码为当前任务结果的输出脉冲序列。 ">
+<meta property='og:url' content='https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/'>
+<meta property='og:site_name' content='Lumenth'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Markdown' /><meta property='article:tag' content='SNN' /><meta property='article:tag' content='Verilog' /><meta property='article:published_time' content='2025-12-08T15:13:28&#43;08:00'/><meta property='article:modified_time' content='2025-12-08T17:32:53&#43;08:00'/>
+<meta name="twitter:title" content="SYNzulu处理器">
+<meta name="twitter:description" content="SYNtzulu：一种用于低功耗FPGA实时传感器数据分析的微型RISC-V控制 SNN 处理器 事件流程 将传入的传感器数据编码为多通道的脉冲箱，每个脉冲箱对应一个传感器数据样本，并实时进行SNN推理以获得可以直接解码为当前任务结果的输出脉冲序列。 ">
+    <link rel="shortcut icon" href="/favicon.ico" />
+<div class="loading">
+    
+     
+    <div class="loader"></div>
+</div>
+
+<style>
+    .loading {
+        position: fixed;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        background-color: #000000;
+    }
+	
+     
+      
+.loader {
+  width: 150px;
+  height: 150px;
+  border-left: 5px solid #38ff8e;
+  border-radius: 50%;
+  animation: right5231 0.9s linear infinite;
+}
+
+.loader::before,
+  .loader::after {
+  content: "";
+  width: 120px;
+  height: 120px;
+  display: block;
+  position: absolute;
+  top: calc(50% - 60px);
+  left: calc(50% - 60px);
+  border-right: 5px solid #ffbe0b;
+  border-radius: 50%;
+  animation: left036 0.9s linear infinite;
+}
+
+.loader::after {
+  width: 90px;
+  height: 90px;
+  top: calc(50% - 45px);
+  left: calc(50% - 45px);
+  border: 0;
+  border-top: 5px solid #ff086e;
+  animation: none;
+}
+
+@keyframes right5231 {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes left036 {
+  from {
+    transform: rotate(720deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+</style>
+
+<script>
+    function initLoading() {
+        
+        const isFirstVisit = !sessionStorage.getItem('visited');
+        if (isFirstVisit) {
+            const loading = document.querySelector(".loading");
+            
+            loading.style.display = "flex";
+            
+            
+            const animationStartTime = Date.now();
+            
+            
+            window.addEventListener('load', function() {
+                
+                const playedTime = Date.now() - animationStartTime;
+                const delayTime = Math.max(1500 - playedTime, 0);
+                
+                
+                setTimeout(() => {
+                    loading.style.opacity = 0;
+                    
+                    setTimeout(() => {
+                        loading.style.display = "none";
+                    }, 300);
+                    
+                    
+                    sessionStorage.setItem('visited', 'true');
+                }, delayTime);
+            });
+            
+            
+            setTimeout(() => {
+                if (loading.style.display === "flex") {
+                    loading.style.opacity = 0;
+                    setTimeout(() => {
+                        loading.style.display = "none";
+                    }, 300);
+                    sessionStorage.setItem('visited', 'true');
+                }
+            }, 5000);
+        }
+    }
+
+    
+    initLoading();
+</script>
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            localStorage.setItem(colorSchemeKey, "dark");
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_298a56a34adc3759.png" width="300"
+                            height="301" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">💫</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Lumenth</a></h1>
+            <h2 class="site-description">欢迎来到我的博客</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/157294956'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/Lumenth'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E6%8A%80%E6%9C%AF%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>技术链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#事件流程">事件流程</a></li>
+    <li><a href="#架构">架构</a>
+      <ol>
+        <li><a href="#模块介绍">模块介绍</a>
+          <ol>
+            <li><a href="#riscv软核">RISCV软核</a></li>
+            <li><a href="#编码解码插槽">编码/解码插槽</a></li>
+            <li><a href="#snn引擎">SNN引擎</a></li>
+          </ol>
+        </li>
+        <li></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E6%95%99%E7%A8%8B/" >
+                教程
+            </a>
+        
+            <a href="/categories/%E7%AC%94%E8%AE%B0/" >
+                笔记
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/">SYNzulu处理器</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published" datetime='2025-12-08T15:13:28&#43;08:00'>2025-12-08</time>
+            </div>
+        
+
+        
+        <div class="article-lastmod">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time>
+                    Dec 08, 2025 17:32 &#43;0800
+                </time>
+            </div></footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="syntzulu一种用于低功耗fpga实时传感器数据分析的微型risc-v控制-snn-处理器">SYNtzulu：一种用于低功耗FPGA实时传感器数据分析的微型RISC-V控制 SNN 处理器
+</h1><h2 id="事件流程">事件流程
+</h2><p>将传入的传感器数据编码为多通道的脉冲箱，每个脉冲箱对应一个传感器数据样本，并实时进行SNN推理以获得可以直接解码为当前任务结果的输出脉冲序列。
+<img src="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B.png"
+	width="1086"
+	height="361"
+	srcset="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B_hu_b48887e5bd9406c1.png 480w, /p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B_hu_ebecf806af54496d.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="300"
+		data-flex-basis="721px"
+	
+></p>
+<h2 id="架构">架构
+</h2><p>架构包含了（从左往右）：</p>
+<ul>
+<li>RISCV软核
+<ul>
+<li>控制输入/输出数据流、电源管理，配置架构超参数</li>
+</ul>
+</li>
+<li>可配置的编码插槽：
+<ul>
+<li>对传感器预处理获得脉冲序列</li>
+</ul>
+</li>
+<li>SNN引擎：
+<ul>
+<li>两个子处理器，主要计算核心</li>
+</ul>
+</li>
+<li>可配置的解码插槽
+<ul>
+<li>输出脉冲序列转化为可读数据
+<img src="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%9E%B6%E6%9E%84.png"
+	width="1061"
+	height="458"
+	srcset="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%9E%B6%E6%9E%84_hu_326dead37fe46849.png 480w, /p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%9E%B6%E6%9E%84_hu_b1a4f0e5f0488727.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="231"
+		data-flex-basis="555px"
+	
+></li>
+</ul>
+</li>
+</ul>
+<h3 id="模块介绍">模块介绍
+</h3><h4 id="riscv软核">RISCV软核
+</h4><p>RISCV软核是穿行RISC-V(SERV)核心，每32个周期执行一次操作，性能有限。</p>
+<p>能通过加载/存储操作对多个内存映射外设进行控制：</p>
+<ul>
+<li>SPI和UART数据传输
+<ul>
+<li>从SPI闪存驱动器加载突触权重</li>
+<li>通过SPI接口输入样本流(21Mbps)</li>
+<li>输出推断信息通过UART(115200bps)</li>
+</ul>
+</li>
+<li>电源管理</li>
+<li>编码和解码插槽参数
+<ul>
+<li>中间件完成初始化后，采用定时器中断，以循环方式采集新的样本流</li>
+</ul>
+</li>
+</ul>
+<h4 id="编码解码插槽">编码/解码插槽
+</h4><p>编码</p>
+<p>SYNtzulu的SNN引擎 由可配置的编码和解码插槽封装，编码插槽可以定制化配置，以实现将输入数据转换为脉冲序列的多种方法。SNN引擎未使用的FPGA资源足以支持相当复杂的DSP密集型方法，包括对大量通道和采集速率进行数据预处理。</p>
+<p>编码插槽包括三个级联连接的模块：</p>
+<ul>
+<li>采用基于BRAM的输出缓存器存储通过SPI接口接受的原始输入样本（接收样本）
+<ul>
+<li>作用：在低速率数据传输时对编码时隙 的其余部分进行门控。若BRAM资源不足可移除</li>
+</ul>
+</li>
+<li>特定应用模块对输入缓冲区中存储的样本执行编码算法，依次生成脉冲信号（生成脉冲）</li>
+<li>串并转换器将串行脉冲总线适配到 SNN 引擎的四通道脉冲总线上（串转并输出）</li>
+</ul>
+<p>解码</p>
+<p>解码插槽解释SNN引擎生成的输出脉冲序列，提供可用的输出，如回归任务的结果或分类任务的结果。</p>
+<p>解码插槽 本质上比编码插槽 简单，在某些情况下可能根本不需要。</p>
+<h4 id="snn引擎">SNN引擎
+</h4><p>该引擎设计用于执行由 LIF 神经元密集层组成的前馈SNN的推理，LIF行为：</p>
+<ul>
+<li>i(t) =Σ ws（t − 1）；（上一级的脉冲按权重传入）</li>
+<li>v(t)= αv（t −1）+i(t)；（膜电位积累）</li>
+<li>s(t) = v(t) &gt; θ;（根据膜电位比较是否产生脉冲）</li>
+<li>v(t)=v(t)·（1− s(t)）（若产生了脉冲则清零膜电位）</li>
+</ul>
+<p>其中i (t)是突触电流，w是突触权重，s是脉冲，v (t)是膜电位，α是衰减因子，θ 是脉冲阈值。</p>
+<p>实现方式（两个并行的流程）：</p>
+<ol>
+<li>
+<p>权重储存：到iCE40UP5K芯片的大部分存储能力由四个16位宽单端口RAM（SPRAM）存储器提供，专门将这些存储块用于权重存储。将四个SPRAM分为两组(Weight memory)，每一组供一个突出加法器使用(4个8位权重)</p>
+</li>
+<li>
+<p>突触加法器：计算i(t) =Σ ws（t − 1）；</p>
+</li>
+<li>
+<p>LIF integration：计算剩余式子，更新v(t),检测脉冲条件。</p>
+</li>
+<li>
+<p>层间链接：LIF integration产生的脉冲流量，以及编码和解码插槽的流量，存储至脉冲存储器(Spike mem)。脉冲存储器有两个块RAM(BRAM)缓冲器组成，SNN Engine交替使用两个缓冲区来读取和写入部分结果。</p>
+</li>
+<li>
+<p>轴突延迟(Axonal delay)：SYNtzulu中托管的轴突延迟单元允许根据每个神经元定制轴突延迟，范围从0到63个时间步。模块架构由两个BRAM组成：</p>
+<ol>
+<li>第一个BRAM存储每个神经元对应的时间延迟，以时间步表示，这些延迟在训练过程中离线确定。</li>
+<li>第二个BRAM用作FIFO，即先进先出。存储一个包含63个二进制位的数组，对应过去63个时间步长的放电活动历史记录。</li>
+</ol>
+<p>两个BRAM可同时访问。对于每个待分析的神经元，从延迟BRAM中加载的相应轴突延迟值用于构成FIFO BRAM的地址，以确定应作为输出传播的FIFO位置。</p>
+</li>
+<li>
+<p>Stack堆栈下方流程后会提到</p>
+</li>
+</ol>
+<p>处理流程
+<img src="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png"
+	width="996"
+	height="738"
+	srcset="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B_hu_a9cb5185e2bbaf7e.png 480w, /p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B_hu_83ceb7f895bad1de.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="134"
+		data-flex-basis="323px"
+	
+></p>
+<p>数据处理流程：样本通过SPI接口（TX1）输入，经编码模块（E1）转换为神经脉冲信号后，由SNN处理器进行逐层运算（从L1到L4）。处理器通过解码模块（D1）执行训练好的模型，最终通过UART接口（未显示）输出数据流。图中底部的放大图显示，子处理器（Sub-Ps）均匀分担各层运算任务，每个子处理器负责处理该层中半数神经元的运算。</p>
+<p>此外，为充分利用脉冲神经网络（SNN）范式优势而必需的事件稀疏性挖掘技术（event-sparsity exploitation），是通过一项关键的创新特性实现的：一个主动脉冲堆栈模块可动态调度突触权重向突触加法器的加载过程，仅筛选出活跃的突触组进行处理。该处理方式可以节省操作并延长待机时间。</p>
+<ul>
+<li>
+<p>实现时间稀疏性</p>
+<p>将突触权重分组存储，并利用脉冲堆栈技术跳过所有未被上游脉冲触发的组的计算。定由4个权重组成的组别是本实施方案中的最优架构选择(原因看文章Event Sparsity Exploitation部分)。</p>
+<p>该堆栈单元逐神经元追踪哪些权重组需要从权重存储器中加载及其对应地址。对于不被上游事件触发的权重组（即对应4个未放电神经元的组），堆栈中不会记录，从而避免相应计算并利用稀疏性。</p>
+<p>图中的虚线展示了稀疏性的一个示例性测量值，即在与我们某个用例相关的数据集中，20秒记录期间非活跃突触的百分比。实线则展示了通过考虑脉冲堆栈 采用的四分组方式可实际利用的稀疏性。
+<img src="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E7%A8%80%E7%96%8F%E6%80%A7%E5%AF%B9%E6%AF%94.png"
+	width="605"
+	height="247"
+	srcset="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E7%A8%80%E7%96%8F%E6%80%A7%E5%AF%B9%E6%AF%94_hu_4879fb0be68b3dc.png 480w, /p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E7%A8%80%E7%96%8F%E6%80%A7%E5%AF%B9%E6%AF%94_hu_3fc8bdbae1660e12.png 1024w"
+	loading="lazy"
+	
+		alt="基于尖峰堆叠的稀疏性利用与可用稀疏性对比"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="244"
+		data-flex-basis="587px"
+	
+></p>
+</li>
+</ul>
+<h3 id="">
+</h3>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/markdown/">Markdown</a>
+        
+            <a href="/tags/snn/">SNN</a>
+        
+            <a href="/tags/verilog/">Verilog</a>
+        
+    </section>
+
+
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 Dec 08, 2025 17:32 &#43;0800
+        </span>
+    </section></footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/markdown%E8%AF%AD%E6%B3%95%E6%8C%87%E5%8D%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/markdown%E8%AF%AD%E6%B3%95%E6%8C%87%E5%8D%97/pawel-czerwinski-8uZPynIu-rQ-unsplash.c514d916917173a48a42e0114b469961_hu_12cb662251854034.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post Markdown语法指南"
+                        
+                        data-hash="md5-xRTZFpFxc6SKQuARS0aZYQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Markdown语法指南</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2025 Lumenth
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.32.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c922af694cc257bf1ecc41c0dd7b0430f9114ec280ccf67cd2c6ad55f5316c4e.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+<style>
+    #TableOfContents > ul, ol {
+        ul, ol {
+            display: none;
+        }
+        .open {
+            display: block;
+        }
+    }
+</style>
+
+<script>
+    function initTocHide() {
+        
+        let toc = document.querySelector(".widget--toc");
+        if (!toc) {
+            return;
+        }
+        
+        
+        window.addEventListener('scroll', function() {
+            
+            let openUl = document.querySelectorAll(".open");
+            if (openUl.length > 0) {
+              openUl.forEach((ul) => {
+                ul.classList.remove("open")
+              })
+            }
+            
+            let currentLi = document.querySelector(".active-class");
+            if (!currentLi) {
+                return
+            }
+            
+            if (currentLi.children.length > 1) {
+                currentLi.children[1].classList.add("open")
+            }
+            
+            let ul = currentLi.parentElement;
+            do {
+                ul.classList.add("open");
+                ul = ul.parentElement.parentElement
+            } while (ul !== undefined && (ul.localName === 'ul' || ul.localName === 'ol'))
+        });
+    }
+    initTocHide()
+</script>
+
+<style>
+  @font-face {
+    font-family: '栗山巧致字体';
+    src: url(https://Lumenth.github.io/font/KURIYAMAKOUCHIFONT_N.ttf) format('truetype');
+  }
+
+  :root {
+    --base-font-family: '栗山巧致字体';
+    --code-font-family: '栗山巧致字体';
+  }
+</style>
+
+<style>
+     
+    #backTopBtn {
+        display: none;
+        position: fixed;
+        bottom: 30px;
+        z-index: 99;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        background-image: url(https://Lumenth.github.io/icons/backTop.svg);
+    }
+</style>
+
+<script>
+    
+
+    function initScrollTop() {
+        let rightSideBar = document.querySelector(".right-sidebar");
+        if (!rightSideBar) {
+            return;
+        }
+        
+        let btn = document.createElement("div");
+        btn.id = "backTopBtn";
+        btn.onclick = backToTop
+        rightSideBar.appendChild(btn)
+        
+        window.onscroll = function() {
+            
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        };
+    }
+
+    
+
+    function backToTop(){
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
+    initScrollTop();
+</script>
+
+
+<style>
+     
+    .highlight {
+         
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .code-show {
+        max-height: none !important;
+    }
+
+    .code-more-box {
+        width: 100%;
+        padding-top: 78px;
+        background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), to(#fff));
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+
+    .code-more-btn {
+        display: block;
+        margin: auto;
+        width: 44px;
+        height: 22px;
+        background: #f0f0f5;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding-top: 6px;
+        cursor: pointer;
+    }
+
+    .code-more-img {
+        cursor: pointer !important;
+        display: block;
+        margin: auto;
+        width: 22px;
+        height: 16px;
+    }
+</style>
+
+<script>
+  function initCodeMoreBox() {
+    let codeBlocks = document.querySelectorAll(".highlight");
+    if (!codeBlocks) {
+      return;
+    }
+    codeBlocks.forEach(codeBlock => {
+      
+      if (codeBlock.scrollHeight <= codeBlock.clientHeight) {
+        return;
+      }
+      
+      
+      let codeMoreBox = document.createElement('div');
+      codeMoreBox.classList.add('code-more-box');
+      
+      let codeMoreBtn = document.createElement('span');
+      codeMoreBtn.classList.add('code-more-btn');
+      codeMoreBtn.addEventListener('click', () => {
+        codeBlock.classList.add('code-show');
+        codeMoreBox.style.display = 'none';
+        
+        window.dispatchEvent(new Event('resize'))
+      })
+      
+      let img = document.createElement('img');
+      img.classList.add('code-more-img');
+      img.src = "https://Lumenth.github.io/icons/codeMore.png"
+      
+      codeMoreBtn.appendChild(img);
+      codeMoreBox.appendChild(codeMoreBtn);
+      codeBlock.appendChild(codeMoreBox)
+    })
+  }
+  
+  initCodeMoreBox();
+</script>
+
+<style>
+  body {
+    background: url(https://Lumenth.github.io/background/xingkong.png) no-repeat center top;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+</style>
+
+    </body>
+</html>

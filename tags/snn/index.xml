@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>SNN on Lumenth</title>
+        <link>https://Lumenth.github.io/tags/snn/</link>
+        <description>Recent content in SNN on Lumenth</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Lumenth</copyright>
+        <lastBuildDate>Mon, 08 Dec 2025 17:32:53 +0800</lastBuildDate><atom:link href="https://Lumenth.github.io/tags/snn/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>SYNzulu处理器</title>
+        <link>https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/</link>
+        <pubDate>Mon, 08 Dec 2025 15:13:28 +0800</pubDate>
+        
+        <guid>https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/</guid>
+        <description>&lt;h1 id=&#34;syntzulu一种用于低功耗fpga实时传感器数据分析的微型risc-v控制-snn-处理器&#34;&gt;SYNtzulu：一种用于低功耗FPGA实时传感器数据分析的微型RISC-V控制 SNN 处理器
+&lt;/h1&gt;&lt;h2 id=&#34;事件流程&#34;&gt;事件流程
+&lt;/h2&gt;&lt;p&gt;将传入的传感器数据编码为多通道的脉冲箱，每个脉冲箱对应一个传感器数据样本，并实时进行SNN推理以获得可以直接解码为当前任务结果的输出脉冲序列。
+&lt;img src=&#34;https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B.png&#34;
+	width=&#34;1086&#34;
+	height=&#34;361&#34;
+	srcset=&#34;https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B_hu_b48887e5bd9406c1.png 480w, https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B_hu_ebecf806af54496d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;300&#34;
+		data-flex-basis=&#34;721px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;架构&#34;&gt;架构
+&lt;/h2&gt;&lt;p&gt;架构包含了（从左往右）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;RISCV软核
+&lt;ul&gt;
+&lt;li&gt;控制输入/输出数据流、电源管理，配置架构超参数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;可配置的编码插槽：
+&lt;ul&gt;
+&lt;li&gt;对传感器预处理获得脉冲序列&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;SNN引擎：
+&lt;ul&gt;
+&lt;li&gt;两个子处理器，主要计算核心&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;可配置的解码插槽
+&lt;ul&gt;
+&lt;li&gt;输出脉冲序列转化为可读数据
+&lt;img src=&#34;https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%9E%B6%E6%9E%84.png&#34;
+	width=&#34;1061&#34;
+	height=&#34;458&#34;
+	srcset=&#34;https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%9E%B6%E6%9E%84_hu_326dead37fe46849.png 480w, https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%9E%B6%E6%9E%84_hu_b1a4f0e5f0488727.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;231&#34;
+		data-flex-basis=&#34;555px&#34;
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;模块介绍&#34;&gt;模块介绍
+&lt;/h3&gt;&lt;h4 id=&#34;riscv软核&#34;&gt;RISCV软核
+&lt;/h4&gt;&lt;p&gt;RISCV软核是穿行RISC-V(SERV)核心，每32个周期执行一次操作，性能有限。&lt;/p&gt;
+&lt;p&gt;能通过加载/存储操作对多个内存映射外设进行控制：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SPI和UART数据传输
+&lt;ul&gt;
+&lt;li&gt;从SPI闪存驱动器加载突触权重&lt;/li&gt;
+&lt;li&gt;通过SPI接口输入样本流(21Mbps)&lt;/li&gt;
+&lt;li&gt;输出推断信息通过UART(115200bps)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;电源管理&lt;/li&gt;
+&lt;li&gt;编码和解码插槽参数
+&lt;ul&gt;
+&lt;li&gt;中间件完成初始化后，采用定时器中断，以循环方式采集新的样本流&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;编码解码插槽&#34;&gt;编码/解码插槽
+&lt;/h4&gt;&lt;p&gt;编码&lt;/p&gt;
+&lt;p&gt;SYNtzulu的SNN引擎 由可配置的编码和解码插槽封装，编码插槽可以定制化配置，以实现将输入数据转换为脉冲序列的多种方法。SNN引擎未使用的FPGA资源足以支持相当复杂的DSP密集型方法，包括对大量通道和采集速率进行数据预处理。&lt;/p&gt;
+&lt;p&gt;编码插槽包括三个级联连接的模块：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;采用基于BRAM的输出缓存器存储通过SPI接口接受的原始输入样本（接收样本）
+&lt;ul&gt;
+&lt;li&gt;作用：在低速率数据传输时对编码时隙 的其余部分进行门控。若BRAM资源不足可移除&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;特定应用模块对输入缓冲区中存储的样本执行编码算法，依次生成脉冲信号（生成脉冲）&lt;/li&gt;
+&lt;li&gt;串并转换器将串行脉冲总线适配到 SNN 引擎的四通道脉冲总线上（串转并输出）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;解码&lt;/p&gt;
+&lt;p&gt;解码插槽解释SNN引擎生成的输出脉冲序列，提供可用的输出，如回归任务的结果或分类任务的结果。&lt;/p&gt;
+&lt;p&gt;解码插槽 本质上比编码插槽 简单，在某些情况下可能根本不需要。&lt;/p&gt;
+&lt;h4 id=&#34;snn引擎&#34;&gt;SNN引擎
+&lt;/h4&gt;&lt;p&gt;该引擎设计用于执行由 LIF 神经元密集层组成的前馈SNN的推理，LIF行为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;i(t) =Σ ws（t − 1）；（上一级的脉冲按权重传入）&lt;/li&gt;
+&lt;li&gt;v(t)= αv（t −1）+i(t)；（膜电位积累）&lt;/li&gt;
+&lt;li&gt;s(t) = v(t) &amp;gt; θ;（根据膜电位比较是否产生脉冲）&lt;/li&gt;
+&lt;li&gt;v(t)=v(t)·（1− s(t)）（若产生了脉冲则清零膜电位）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其中i (t)是突触电流，w是突触权重，s是脉冲，v (t)是膜电位，α是衰减因子，θ 是脉冲阈值。&lt;/p&gt;
+&lt;p&gt;实现方式（两个并行的流程）：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;权重储存：到iCE40UP5K芯片的大部分存储能力由四个16位宽单端口RAM（SPRAM）存储器提供，专门将这些存储块用于权重存储。将四个SPRAM分为两组(Weight memory)，每一组供一个突出加法器使用(4个8位权重)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;突触加法器：计算i(t) =Σ ws（t − 1）；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;LIF integration：计算剩余式子，更新v(t),检测脉冲条件。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;层间链接：LIF integration产生的脉冲流量，以及编码和解码插槽的流量，存储至脉冲存储器(Spike mem)。脉冲存储器有两个块RAM(BRAM)缓冲器组成，SNN Engine交替使用两个缓冲区来读取和写入部分结果。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;轴突延迟(Axonal delay)：SYNtzulu中托管的轴突延迟单元允许根据每个神经元定制轴突延迟，范围从0到63个时间步。模块架构由两个BRAM组成：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;第一个BRAM存储每个神经元对应的时间延迟，以时间步表示，这些延迟在训练过程中离线确定。&lt;/li&gt;
+&lt;li&gt;第二个BRAM用作FIFO，即先进先出。存储一个包含63个二进制位的数组，对应过去63个时间步长的放电活动历史记录。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;两个BRAM可同时访问。对于每个待分析的神经元，从延迟BRAM中加载的相应轴突延迟值用于构成FIFO BRAM的地址，以确定应作为输出传播的FIFO位置。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Stack堆栈下方流程后会提到&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;处理流程
+&lt;img src=&#34;https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B.png&#34;
+	width=&#34;996&#34;
+	height=&#34;738&#34;
+	srcset=&#34;https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B_hu_a9cb5185e2bbaf7e.png 480w, https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B_hu_83ceb7f895bad1de.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;134&#34;
+		data-flex-basis=&#34;323px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;数据处理流程：样本通过SPI接口（TX1）输入，经编码模块（E1）转换为神经脉冲信号后，由SNN处理器进行逐层运算（从L1到L4）。处理器通过解码模块（D1）执行训练好的模型，最终通过UART接口（未显示）输出数据流。图中底部的放大图显示，子处理器（Sub-Ps）均匀分担各层运算任务，每个子处理器负责处理该层中半数神经元的运算。&lt;/p&gt;
+&lt;p&gt;此外，为充分利用脉冲神经网络（SNN）范式优势而必需的事件稀疏性挖掘技术（event-sparsity exploitation），是通过一项关键的创新特性实现的：一个主动脉冲堆栈模块可动态调度突触权重向突触加法器的加载过程，仅筛选出活跃的突触组进行处理。该处理方式可以节省操作并延长待机时间。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;实现时间稀疏性&lt;/p&gt;
+&lt;p&gt;将突触权重分组存储，并利用脉冲堆栈技术跳过所有未被上游脉冲触发的组的计算。定由4个权重组成的组别是本实施方案中的最优架构选择(原因看文章Event Sparsity Exploitation部分)。&lt;/p&gt;
+&lt;p&gt;该堆栈单元逐神经元追踪哪些权重组需要从权重存储器中加载及其对应地址。对于不被上游事件触发的权重组（即对应4个未放电神经元的组），堆栈中不会记录，从而避免相应计算并利用稀疏性。&lt;/p&gt;
+&lt;p&gt;图中的虚线展示了稀疏性的一个示例性测量值，即在与我们某个用例相关的数据集中，20秒记录期间非活跃突触的百分比。实线则展示了通过考虑脉冲堆栈 采用的四分组方式可实际利用的稀疏性。
+&lt;img src=&#34;https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E7%A8%80%E7%96%8F%E6%80%A7%E5%AF%B9%E6%AF%94.png&#34;
+	width=&#34;605&#34;
+	height=&#34;247&#34;
+	srcset=&#34;https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E7%A8%80%E7%96%8F%E6%80%A7%E5%AF%B9%E6%AF%94_hu_4879fb0be68b3dc.png 480w, https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/%E7%A8%80%E7%96%8F%E6%80%A7%E5%AF%B9%E6%AF%94_hu_3fc8bdbae1660e12.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;基于尖峰堆叠的稀疏性利用与可用稀疏性对比&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;244&#34;
+		data-flex-basis=&#34;587px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;&#34;&gt;
+&lt;/h3&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Verilog on Lumenth</title>
+        <link>https://Lumenth.github.io/categories/verilog/</link>
+        <description>Recent content in Verilog on Lumenth</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Lumenth</copyright><atom:link href="https://Lumenth.github.io/categories/verilog/index.xml" rel="self" type="application/rss+xml" />
+    </channel>
+</rss>
