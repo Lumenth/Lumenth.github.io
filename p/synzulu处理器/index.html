@@ -10,9 +10,10 @@
 <meta property='og:description' content="SYNtzulu：一种用于低功耗FPGA实时传感器数据分析的微型RISC-V控制 SNN 处理器 事件流程 将传入的传感器数据编码为多通道的脉冲箱，每个脉冲箱对应一个传感器数据样本，并实时进行SNN推理以获得可以直接解码为当前任务结果的输出脉冲序列。 ">
 <meta property='og:url' content='https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/'>
 <meta property='og:site_name' content='Lumenth'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Markdown' /><meta property='article:tag' content='SNN' /><meta property='article:tag' content='Verilog' /><meta property='article:published_time' content='2025-12-08T15:13:28&#43;08:00'/><meta property='article:modified_time' content='2025-12-08T17:32:53&#43;08:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Markdown' /><meta property='article:tag' content='SNN' /><meta property='article:tag' content='Verilog' /><meta property='article:published_time' content='2025-12-08T15:13:28&#43;08:00'/><meta property='article:modified_time' content='2025-12-14T16:25:23&#43;08:00'/><meta property='og:image' content='https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/fengmian.png' />
 <meta name="twitter:title" content="SYNzulu处理器">
-<meta name="twitter:description" content="SYNtzulu：一种用于低功耗FPGA实时传感器数据分析的微型RISC-V控制 SNN 处理器 事件流程 将传入的传感器数据编码为多通道的脉冲箱，每个脉冲箱对应一个传感器数据样本，并实时进行SNN推理以获得可以直接解码为当前任务结果的输出脉冲序列。 ">
+<meta name="twitter:description" content="SYNtzulu：一种用于低功耗FPGA实时传感器数据分析的微型RISC-V控制 SNN 处理器 事件流程 将传入的传感器数据编码为多通道的脉冲箱，每个脉冲箱对应一个传感器数据样本，并实时进行SNN推理以获得可以直接解码为当前任务结果的输出脉冲序列。 "><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Lumenth.github.io/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/fengmian.png' />
     <link rel="shortcut icon" href="/favicon.ico" />
 <div class="loading">
     
@@ -372,7 +373,12 @@
             <li><a href="#snn引擎">SNN引擎</a></li>
           </ol>
         </li>
-        <li></li>
+      </ol>
+    </li>
+    <li><a href="#代码复现">代码复现：</a>
+      <ol>
+        <li><a href="#神经网络训练">神经网络训练</a></li>
+        <li><a href="#配置ubuntu">配置Ubuntu</a></li>
       </ol>
     </li>
   </ol>
@@ -386,8 +392,20 @@
 
 
             <main class="main full-width">
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/">
+                <img src="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/fengmian_hu_fa5b0c3d40a22773.png"
+                        srcset="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/fengmian_hu_fa5b0c3d40a22773.png 800w, /p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/fengmian_hu_a40bb58ec2e3767.png 1600w"
+                        width="800" 
+                        height="751" 
+                        loading="lazy"
+                        alt="Featured image of post SYNzulu处理器" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
     
@@ -443,7 +461,7 @@
 
 
                 <time>
-                    Dec 08, 2025 17:32 &#43;0800
+                    Dec 14, 2025 16:25 &#43;0800
                 </time>
             </div></footer>
     
@@ -614,8 +632,157 @@
 ></p>
 </li>
 </ul>
-<h3 id="">
-</h3>
+<h2 id="代码复现">代码复现：
+</h2><h3 id="神经网络训练">神经网络训练
+</h3><p>由于暂时不会python配不好环境这里我用google colab来训练</p>
+<p>进入GOOGLE Drive</p>
+<p><strong>准备工作</strong>:</p>
+<p>下面是我自己修改过可运行的代码，通过网盘分享的文件：python
+链接: <a class="link" href="https://pan.baidu.com/s/1F4RKqNcQUKKyh3ckCRihpg?pwd=5qb8"  target="_blank" rel="noopener"
+    >https://pan.baidu.com/s/1F4RKqNcQUKKyh3ckCRihpg?pwd=5qb8</a> 提取码: 5qb8</p>
+<p>将python文件夹的两个ipynb文件上传如下图
+<img src="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/Drive.png"
+	width="855"
+	height="570"
+	srcset="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/Drive_hu_1bf3878c32880f2a.png 480w, /p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/Drive_hu_ee65bc08f5f377c5.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="150"
+		data-flex-basis="360px"
+	
+></p>
+<p>创建文件夹目录结构如下</p>
+<ul>
+<li>Library</li>
+<li>Ninapro
+<ul>
+<li>Slayer
+<ul>
+<li>E1</li>
+</ul>
+</li>
+<li>Dataset
+<ul>
+<li>s1</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>前往<a class="link" href="https://github.com/lava-nc/lava-dl"  target="_blank" rel="noopener"
+    >下载所需的Lava-dl</a>,选择下载为zip
+解压后把文件夹传到Library中
+<img src="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/Library.png"
+	width="789"
+	height="263"
+	srcset="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/Library_hu_94b64d2d1f9f6e53.png 480w, /p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/Library_hu_ee96f82164935312.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="300"
+		data-flex-basis="720px"
+	
+></p>
+<p>前往<a class="link" href="https://ninapro.hevs.ch/instructions/DB5.html"  target="_blank" rel="noopener"
+    >下载需训练的数据集</a>,将下载好的数据集传进s1文件夹
+<img src="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/s1.png"
+	width="1121"
+	height="561"
+	srcset="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/s1_hu_91a77a112a6ad7cd.png 480w, /p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/s1_hu_c8a41ddad6f758b0.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="199"
+		data-flex-basis="479px"
+	
+></p>
+<p><strong>配置并运行代码</strong>
+从google drive打开semg_syntzulu_Demo.ipyb，会发现已经跳转至Google Colab</p>
+<p>右上角可以链接T4GPU</p>
+<p><img src="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/T4.png"
+	width="569"
+	height="286"
+	srcset="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/T4_hu_3e972ee6c6d1779.png 480w, /p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/T4_hu_73855d804d45bab9.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="198"
+		data-flex-basis="477px"
+	
+></p>
+<p>链接成功后是这样的：</p>
+<p><img src="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/link.png"
+	width="419"
+	height="304"
+	srcset="/p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/link_hu_3c8cae7a054ee797.png 480w, /p/synzulu%E5%A4%84%E7%90%86%E5%99%A8/link_hu_f41ef61e1fb0c569.png 1024w"
+	loading="lazy"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="137"
+		data-flex-basis="330px"
+	
+></p>
+<p>直接运行即可，运行过程会挂载Google Drive，在第一步需要按enter来选择python</p>
+<p>运行成功后会在Ninapro文件夹看见obj文件,然后可以直接运行syntzulu_hw_file_generator.ipynb，运行到Hardware Files Generation即可，因为再下面是测试用的，此时会发现网页已经下载了EMG文件</p>
+<h3 id="配置ubuntu">配置Ubuntu
+</h3><p>安装OSS CAD Suite</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">~/</span><span class="n">tools</span>
+</span></span><span class="line"><span class="cl"><span class="n">cd</span> <span class="o">~/</span><span class="n">tools</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 下载OSS CAD Suite(https://github.com/YosysHQ/oss-cad-suite-build/releases/tag/2023-07-28)</span>
+</span></span><span class="line"><span class="cl"><span class="n">tar</span> <span class="o">-</span><span class="n">xf</span> <span class="n">oss</span><span class="o">-</span><span class="n">cad</span><span class="o">-</span><span class="n">suite</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">x64</span><span class="o">-*.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装</span>
+</span></span><span class="line"><span class="cl"><span class="n">source</span> <span class="n">oss_cad_suite</span><span class="o">/</span><span class="n">environment</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加环境变量</span>
+</span></span><span class="line"><span class="cl"><span class="n">echo</span> <span class="s1">&#39;source ~/tools/oss-cad-suite/environment&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">bashrc</span>
+</span></span><span class="line"><span class="cl"><span class="n">source</span> <span class="o">~/.</span><span class="n">bashrc</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>安装RISCV编译工具链</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">riscv</span><span class="o">/</span><span class="n">riscv</span><span class="o">-</span><span class="n">gnu</span><span class="o">-</span><span class="n">toolchain</span> <span class="o">--</span><span class="n">recursive</span>
+</span></span><span class="line"><span class="cl"><span class="n">cd</span> <span class="n">riscv</span><span class="o">-</span><span class="n">gnu</span><span class="o">-</span><span class="n">toolchain</span><span class="o">/</span>
+</span></span><span class="line"><span class="cl"><span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">riscv</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">arch</span><span class="o">=</span><span class="n">rv32i</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">abi</span><span class="o">=</span><span class="n">ilp32</span>
+</span></span><span class="line"><span class="cl"><span class="n">sudo</span> <span class="n">make</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>https不稳定，如果clone不下来建议配置ssh然后执行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">git config --global url.&#34;git@github.com:&#34;.insteadOf &#34;https://github.com/&#34; 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样就是用ssh来下载了</p>
+<p>clone下SYNzulu文件，将之前下载的EMG文件拷入SYNzulu的根目录下即可开始Simulate</p>
+
 </section>
 
 
@@ -642,7 +809,7 @@
 
 
         <span>
-            最后更新于 Dec 08, 2025 17:32 &#43;0800
+            最后更新于 Dec 14, 2025 16:25 &#43;0800
         </span>
     </section></footer>
 
